@@ -1,36 +1,36 @@
-import { ContactItem } from 'components/ContactItem/ContactItem';
-import PropTypes from 'prop-types';
-import { Ul } from './ContactList.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts, getFilter } from 'redux/selectors';
+import { deleteContact } from '../../redux/contactSlice';
+import { List, Item, Button,} from './ContactList.styled';
 
-export const ContactList = ({ contacts, deleteItem }) => {
-  return (
-    <div>
-      {contacts.length > 0 ? (
-        <Ul>
-          {contacts.map(({ id, name, number }) => (
-            <ContactItem
-              key={id}
-              id={id}
-              name={name}
-              number={number}
-              deleteItem={deleteItem}
-            />
-          ))}
-        </Ul>
-      ) : (
-        <p>No contacts available</p>
-      )}
-    </div>
+const getVisibleContacts = (contacts, filter) => {
+  return contacts.filter((contact) => 
+    contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 };
 
-ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ),
-  deleteItem: PropTypes.func.isRequired,
+export const ContactList = () => {
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+  const dispatch = useDispatch();
+  const filteredContacts = getVisibleContacts(contacts, filter);
+
+  return(
+    <List>
+      {contacts.length > 0 ? (
+        filteredContacts.map(({ id, name, number }) => {
+          return (
+            <Item key={id}>
+              {name} : {number}
+              <Button conClick={() => dispatch(deleteContact(id))}>Delete</Button>
+            </Item>
+          );
+        })
+      ) : (
+        <p>There are no contacts</p>
+      )}
+    </List>
+  );
 };
+
+
