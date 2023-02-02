@@ -5,7 +5,6 @@ import { nanoid } from '@reduxjs/toolkit';
 import { addContact } from '../../redux/contactSlice';
 import { Form, Input, Label, Button } from './ContactForm.styled';
 
-
 export const ContactForm = () => {
   const [name, setName] = useState('');
 
@@ -16,10 +15,11 @@ export const ContactForm = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-    if (contacts.find(
-      contact =>
-        contact.name.toLowerCase() === event.target.name.value.toLowerCase()
-    )
+    if (
+      contacts.find(
+        contact =>
+          contact.name.toLowerCase() === event.target.name.value.toLowerCase()
+      )
     ) {
       alert('There is a contact with this name');
       resetForm();
@@ -32,7 +32,7 @@ export const ContactForm = () => {
 
   const inputChange = event => {
     const { value, name } = event.target;
-    
+
     switch (name) {
       case 'name':
         setName(value);
@@ -48,8 +48,8 @@ export const ContactForm = () => {
     }
   };
   const resetForm = () => {
-    setName("");
-    setNumber("");
+    setName('');
+    setNumber('');
   };
   return (
     <>
@@ -82,7 +82,4 @@ export const ContactForm = () => {
       </Form>
     </>
   );
-}
-
-
-
+};
