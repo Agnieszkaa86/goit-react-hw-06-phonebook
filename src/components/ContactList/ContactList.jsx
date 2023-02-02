@@ -1,10 +1,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts, getFilter } from 'redux/selectors';
 import { deleteContact } from '../../redux/contactSlice';
-import { List, Item, Button,} from './ContactList.styled';
+import { List, Item, Button } from './ContactList.styled';
 
 const getVisibleContacts = (contacts, filter) => {
-  return contacts.filter((contact) => 
+  return contacts.filter(contact =>
     contact.name.toLowerCase().includes(filter.toLowerCase())
   );
 };
@@ -15,14 +15,16 @@ export const ContactList = () => {
   const dispatch = useDispatch();
   const filteredContacts = getVisibleContacts(contacts, filter);
 
-  return(
+  return (
     <List>
       {contacts.length > 0 ? (
         filteredContacts.map(({ id, name, number }) => {
           return (
             <Item key={id}>
               {name} : {number}
-              <Button conClick={() => dispatch(deleteContact(id))}>Delete</Button>
+              <Button onClick={() => dispatch(deleteContact(id))}>
+                Delete
+              </Button>
             </Item>
           );
         })
@@ -32,5 +34,3 @@ export const ContactList = () => {
     </List>
   );
 };
-
-
